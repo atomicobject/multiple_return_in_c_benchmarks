@@ -1,5 +1,5 @@
 These are the benchmarks used in my post,
-["Comparing the Cost of Different Multiple-return Techniques in C"](1).
+["Comparing the Cost of Different Multiple-return Techniques in C"][1].
 
 [1]: http://spin.atomicobject.com/2013/12/23/c-return-multiple-values/
 
