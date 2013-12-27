@@ -1,13 +1,13 @@
-These are the benchmarks used in my post, ("Comparing the Cost of
-Different Multiple-return Techniques in C")[1].
+These are the benchmarks used in my post,
+["Comparing the Cost of Different Multiple-return Techniques in C"](1).
 
 [1]: http://spin.atomicobject.com/2013/12/23/c-return-multiple-values/
 
 
 # Dependencies
 
-You'll need a C compiler (C99), a POSIX environment, and gnuplot for
-creating the graphs. 
+You'll need a C compiler (C99), a POSIX environment, and
+[gnuplot](http://www.gnuplot.info/) for creating the graphs.
 
 # Usage
 
