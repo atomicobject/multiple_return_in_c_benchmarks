@@ -1,0 +1,40 @@
+#!/bin/sh
+
+mkdir -p graph
+
+for RPT in $*
+do
+    OPT="-O3"
+    TITLE=$(echo ${RPT} | sed -e "s/report_//" -e "s/\.rpt//" -e "s/_/ /g")
+    INPUT_FILE="${RPT}"
+    OUTPUT="graph/${RPT}.png"
+
+    # This is a bit awkward, but embeds the gnuplot script in the
+    # shell script. Trying to pass variables to it as an external
+    # script led to a bunch of nested escaping.
+    echo "
+set terminal png background '#ffffff' 
+set output '${OUTPUT}'
+set style fill solid 1.00
+set grid noxtics ytics
+set key bmargin center horizontal autotitle columnhead
+set style data histograms
+set xtics border in scale 1,0.5 mirror rotate by -45  autojustify
+set title '${TITLE}'
+set xlabel 'benchmark' 
+set ylabel 'time (msec)'
+
+# plot 2,3,4,5 using x label in column 1
+plot [][0:] '${INPUT_FILE}' \
+    u 2:xtic(1) linecolor rgb '#79CCC7', \
+    '' u 3 linecolor rgb '#00AAA1', \
+    '' u 4 linecolor rgb '#002225', \
+    '' u 5 linecolor rgb '#597B7C'
+" | gnuplot
+
+# green #00AAA1
+# black #002225
+# minty green #79ccc7
+# dark gray #597B7C
+
+done

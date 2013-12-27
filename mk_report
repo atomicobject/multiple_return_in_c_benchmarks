@@ -1,0 +1,12 @@
+#!/bin/sh
+OS=$(uname -s)
+
+for opt in 0 2; do
+    OUT=report_${OS}_at_O${opt}
+    OUT_TXT=${OUT}.txt
+    OUT_RPT=${OUT}.rpt
+    uname -a > ${OUT_TXT}
+    echo making report ${OUT_RPT}
+    make clean && make -e OPT=${opt} && ./main > ${OUT_TXT}
+    reformat_data ${OUT_TXT} > ${OUT_RPT}
+done

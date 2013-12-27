@@ -1,0 +1,34 @@
+#!/usr/bin/awk -f
+
+# Convert listings of the form:
+#     2 only_return_one      (   21 msec, 0.476 M ops/sec)
+#     2 mutate_struct        (   24 msec, 0.417 M ops/sec)
+#     
+# to something that lists the test and each trial time:
+#
+#    only-return-one    30      31      30      30      
+#    mutate-struct      50      51      51      50      
+#
+# for grouped histogram plotting in graphviz.
+
+$3 ~ "\\(" {
+    trial = $1; name = $2; msec = $4
+    gsub("_", "-", name)
+    if (trial > max_trial) { max_trial = trial }
+    if (!seen[name]) { names[ni++] = name; seen[name] = 1 }
+    
+    info[trial,name] = msec
+    #printf("[%s,%s,%s] = %d\n", opt_name, trial, name, msec)
+}
+
+END {
+    max_name = length(names)
+    printf("trials\t")
+    for (i=0; i<max_trial; i++) { printf("%d\t", i + 1) }
+    printf("\n")
+    for (n=0; n<max_name; n++) {
+        printf("%s\t", names[n])
+        for (t=0; t<max_trial; t++) { printf("%d\t", info[t,names[n]]) }
+        printf("\n")
+    }
+}
